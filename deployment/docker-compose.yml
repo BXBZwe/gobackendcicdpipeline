@@ -3,7 +3,7 @@ version: '3.8' # Use a specific version supported by your Docker version
 services:
   golangcicdpipeline:
     container_name: golangcicdpipeline
-    image: registry.gitlab.com/bxbzwe/golangcicdpipeline:${TAG-latest}
+    image: registry.gitlab.com/bxbzwe/golangcicdpipeline:latest
     env_file: .env
     restart: always
     logging:
