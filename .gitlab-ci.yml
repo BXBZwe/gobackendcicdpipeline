@@ -38,9 +38,14 @@ build:
     - docker build -t registry.gitlab.com/bxbzwe/golangcicdpipeline .
     - docker push registry.gitlab.com/bxbzwe/golangcicdpipeline
 
-
 deploy_api:
   stage: deployment
+  image: docker:19.03.12  # Use a Docker image
+  services:
+    - docker:19.03.12-dind  # Use Docker-in-Docker service
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: "/certs"
   before_script:
     - apt-get update -y && apt-get install -y openssh-client
     - eval $(ssh-agent -s)
