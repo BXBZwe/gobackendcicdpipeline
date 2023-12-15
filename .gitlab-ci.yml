@@ -26,7 +26,7 @@ stages:
 
 # Jobs
 unit-test:
-  image: golang:1.20-alpine
+  image: golang:1.20-alpinea
   stage: test
   script:
     - go test ./...
@@ -70,8 +70,8 @@ update_docker_compose:
   extends: .deploy_template
   script:
     - sed -i "s/^TAG=.*$/TAG=$VERSION/" env-production
-    - scp env-production $SERVER_USER@34.87.31.189:/$SERVER_USER/production/.env
-    - scp -r $CI_PROJECT_DIR/deployment/production/ $SERVER_USER@34.87.31.189:/$SERVER_USER/
+    - scp env-production $SERVER_USER@34.87.31.189:/home/Legendaryzwe/production/.env
+    - scp -r $CI_PROJECT_DIR/deployment/production/ $SERVER_USER@34.87.31.189:/home/Legendaryzwe/
 
 deploy_api:
   extends: .deploy_template
