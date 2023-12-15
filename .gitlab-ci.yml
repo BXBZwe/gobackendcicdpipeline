@@ -25,6 +25,7 @@ test:
     - go test ./handler/...
 
 build:
+  stage: build
   image: docker:19.03.12  # Use a Docker image
   services:
     - docker:19.03.12-dind  # Use Docker-in-Docker service
