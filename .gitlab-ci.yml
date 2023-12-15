@@ -50,8 +50,8 @@ deploy_api:
     - chmod 700 ~/.ssh
     - ssh-keyscan $SERVER_HOST >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
-    - echo $CI_REGISTRY_PASSWORD | docker login registry.gitlab.com -u $CI_REGISTRY_USER --password-stdin
   script:
+    - echo $CI_REGISTRY_PASSWORD | docker login registry.gitlab.com -u $CI_REGISTRY_USER --password-stdin
     - scp ./deployment/.env $SERVER_USER@$SERVER_HOST:/home/zweminmaw2003/.env
     - scp ./deployment/docker-compose.yml $SERVER_USER@$SERVER_HOST:/home/zweminmaw2003/docker-compose.yml
     - ssh $SERVER_USER@$SERVER_HOST "docker-compose -f /home/zweminmaw2003/docker-compose.yml pull && docker-compose -f /home/zweminmaw2003/docker-compose.yml up -d"
