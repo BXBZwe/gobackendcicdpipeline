@@ -25,11 +25,16 @@ test:
     - go test ./handler/...
 
 build:
-  stage: build
+  image: docker:19.03.12  # Use a Docker image
+  services:
+    - docker:19.03.12-dind  # Use Docker-in-Docker service
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: "/certs"
   script:
     - docker build -t registry.gitlab.com/bxbzwe/golangcicdpipeline .
-    - docker tag gocicd registry.gitlab.com/bxbzwe/golangcicdpipeline:latest
-    - docker push registry.gitlab.com/bxbzwe/golangcicdpipeline:latest
+    - docker push registry.gitlab.com/bxbzwe/golangcicdpipeline
+
 
 deploy_api:
   stage: deployment
