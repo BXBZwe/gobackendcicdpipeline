@@ -18,7 +18,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - /home/zweminmaw2003/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - golangcicdpipeline
     logging:
