@@ -18,7 +18,7 @@ stages:
     - mkdir -p ~/.ssh/
     - echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
     - echo "$SSH_PUBLIC_KEY" >> ~/.ssh/id_rsa.pub
-    - ssh-keyscan -H 34.87.31.189 >> ~/.ssh/known_hosts
+    - ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
     - VERSION=$(echo "$CI_COMMIT_REF_NAME" | sed 's/^v//')
     - chmod 600 ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa.pub
@@ -70,12 +70,12 @@ update_docker_compose:
   extends: .deploy_template
   script:
     - sed -i "s/^TAG=.*$/TAG=$VERSION/" env-production
-    - scp env-production $SERVER_USER@34.87.31.189:/$SERVER_USER/production/.env
-    - scp -r $CI_PROJECT_DIR/deployment/production/ $SERVER_USER@34.87.31.189:/$SERVER_USER/
+    - scp env-production $SERVER_USER@$SERVER_HOST:/$SERVER_USER/production/.env
+    - scp -r $CI_PROJECT_DIR/deployment/production/ $SERVER_USER@$SERVER_HOST:/$SERVER_USER/
 
 deploy_api:
   extends: .deploy_template
   stage: deployment
   script:
-    - ssh $SERVER_USER@34.87.31.189 "cd production && docker compose up -d"
+    - ssh $SERVER_USER@$SERVER_HOST "cd production && docker compose up -d"
     
