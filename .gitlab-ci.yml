@@ -26,10 +26,18 @@ test:
 
 build:
   stage: build
+  image: docker:19.03.12  # Use a Docker image
+  services:
+    - docker:19.03.12-dind  # Use Docker-in-Docker service
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
   script:
     - docker build -t registry.gitlab.com/bxbzwe/golangcicdpipeline .
-    - docker tag gocicd registry.gitlab.com/bxbzwe/golangcicdpipeline:latest
-    - docker push registry.gitlab.com/bxbzwe/golangcicdpipeline:latest
+    - docker push registry.gitlab.com/bxbzwe/golangcicdpipeline
+
 
 deploy_api:
   stage: deployment
@@ -37,17 +45,15 @@ deploy_api:
     - apt-get update -y && apt-get install -y openssh-client
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - echo "$SSH_PRIVATE_KEY"
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - ssh-keyscan $SERVER_HOST >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - scp ./deployment/docker-compose.yml $SERVER_USER@$SERVER_HOST:/home/zweminmaw2003/gocicdpipeline/docker-compose.yml
-    - ssh $SERVER_USER@$SERVER_HOST "docker-compose -f /home/zweminmaw2003/gocicdpipeline/docker-compose.yml pull && docker-compose -f /home/zweminmaw2003/gocicdpipeline/docker-compose.yml up -d"
+    - scp ./deployment/.env $SERVER_USER@$SERVER_HOST:/home/zweminmaw2003/.env
+    - scp ./deployment/docker-compose.yml $SERVER_USER@$SERVER_HOST:/home/zweminmaw2003/docker-compose.yml
+    - ssh $SERVER_USER@$SERVER_HOST "docker-compose -f /home/zweminmaw2003/docker-compose.yml pull && docker-compose -f /home/zweminmaw2003/docker-compose.yml up -d"
   only:
     - main
   when: manual
-
-
-
-
