@@ -2,7 +2,7 @@ stages:
   - lint
   - test
   - build
-  - deploy
+  - deployment
 
 variables:
   GO_PROJECT_PATH: $CI_PROJECT_DIR
@@ -26,15 +26,28 @@ test:
 
 build:
   stage: build
-  image: golang:1.21  
   script:
-    - go build -o myapp
-  artifacts:
-    paths:
-      - myapp
+    - docker build -t registry.gitlab.com/bxbzwe/golangcicdpipeline .
+    - docker tag gocicd registry.gitlab.com/bxbzwe/golangcicdpipeline:latest
+    - docker push registry.gitlab.com/bxbzwe/golangcicdpipeline:latest
 
-deploy:
-  stage: deploy
-  image: golang:1.21  
+deploy_api:
+  stage: deployment
+  before_script:
+    - apt-get update -y && apt-get install -y openssh-client
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $SERVER_HOST >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
   script:
-    - echo "Deploying the application"
+    - scp ./deployment/docker-compose.yml $SERVER_USER@$SERVER_HOST:/home/zweminmaw2003/gocicdpipeline/docker-compose.yml
+    - ssh $SERVER_USER@$SERVER_HOST "docker-compose -f /home/zweminmaw2003/gocicdpipeline/docker-compose.yml pull && docker-compose -f /home/zweminmaw2003/gocicdpipeline/docker-compose.yml up -d"
+  only:
+    - main
+  when: manual
+
+
+
+
