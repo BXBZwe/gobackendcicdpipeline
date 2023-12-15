@@ -1,3 +1,3 @@
-module gitlab.com/bxbzwe/gocicd
+module gitlab.com/bxbzwe/golangcicdpipeline
 
 go 1.21

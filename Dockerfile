@@ -11,7 +11,7 @@ WORKDIR /app
 COPY . /app/
 
 # Build the application within the Docker image
-RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o gocicd main.go
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o golangcicdpipeline main.go
 
 # Declare the final step
 # Still use the official Golang Docker image
@@ -23,4 +23,4 @@ COPY --from=builder ./app/ /usr/local/bin
 
 # Declare the command to be executed when
 # we run the 'docker run' command
-ENTRYPOINT ["gocicd"]
+ENTRYPOINT ["golangcicdpipeline"]

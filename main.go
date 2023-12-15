@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"gitlab.com/bxbzwe/gocicd/handler"
+	"gitlab.com/bxbzwe/golangcicdpipeline/handler"
 )
 
 func main() {
