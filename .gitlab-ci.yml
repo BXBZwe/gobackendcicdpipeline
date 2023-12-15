@@ -1,4 +1,5 @@
 stages:
+  - lint
   - test
   - build
   - deploy
@@ -9,6 +10,13 @@ variables:
 before_script:
   - export GO111MODULE=on
   - cd $GO_PROJECT_PATH
+
+lint:
+  stage: lint
+  image: golang:1.18
+  script:
+    - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.49.0
+    - golangci-lint run ./...
 
 test:
   stage: test
@@ -30,4 +38,3 @@ deploy:
   image: golang:1.21  
   script:
     - echo "Deploying the application"
-    # Add your deployment scripts here. This could be SSH commands, Kubernetes deployments, etc.
