@@ -51,8 +51,8 @@ deploy_api:
     - ssh-keyscan $SERVER_HOST >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - scp ./deployment/docker-compose.yml $SERVER_USER@$SERVER_HOST:/home/zweminmaw2003/gocicdpipeline/docker-compose.yml
-    - ssh $SERVER_USER@$SERVER_HOST "docker-compose -f /home/zweminmaw2003/gocicdpipeline/docker-compose.yml pull && docker-compose -f /home/zweminmaw2003/gocicdpipeline/docker-compose.yml up -d"
+    - scp ./deployment/docker-compose.yml $SERVER_USER@$SERVER_HOST:/home/zweminmaw2003/docker-compose.yml
+    - ssh $SERVER_USER@$SERVER_HOST "docker-compose -f /home/zweminmaw2003/docker-compose.yml pull && docker-compose -f /home/zweminmaw2003/docker-compose.yml up -d"
   only:
     - main
   when: manual
