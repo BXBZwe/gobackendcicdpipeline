@@ -12,11 +12,13 @@ before_script:
 
 test:
   stage: test
+  image: golang:1.21  
   script:
     - go test ./handler/...
 
 build:
   stage: build
+  image: golang:1.21  
   script:
     - go build -o myapp
   artifacts:
@@ -25,6 +27,7 @@ build:
 
 deploy:
   stage: deploy
+  image: golang:1.21  
   script:
     - echo "Deploying the application"
     # Add your deployment scripts here. This could be SSH commands, Kubernetes deployments, etc.
