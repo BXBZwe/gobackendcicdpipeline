@@ -70,8 +70,8 @@ update_docker_compose:
   extends: .deploy_template
   script:
     - sed -i "s/^TAG=.*$/TAG=$VERSION/" env-production
-    - scp env-production $SERVER_USER@34.87.31.189:/home/Legendaryzwe/production/.env
-    - scp -r $CI_PROJECT_DIR/deployment/production/ $SERVER_USER@34.87.31.189:/home/Legendaryzwe/
+    - scp env-production $SERVER_USER@34.87.31.189:/$SERVER_USER/production/.env
+    - scp -r $CI_PROJECT_DIR/deployment/production/ $SERVER_USER@34.87.31.189:/$SERVER_USER/
 
 deploy_api:
   extends: .deploy_template
