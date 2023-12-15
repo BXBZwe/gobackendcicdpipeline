@@ -1,0 +1,29 @@
+version: '3'
+services:
+  gocicd:
+    container_name: gocicd
+    image: registry.gitlab.com/BXBZwe/gocicd:${TAG}
+    env_file: .env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: non-blocking
+    restart: always
+
+  nginx-proxy:
+    image: nginx:1.25.1
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - gocicd
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+        mode: non-blocking
