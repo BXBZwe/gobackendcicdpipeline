@@ -2,7 +2,7 @@ version: '3'
 services:
   gocicd:
     container_name: gocicd
-    image: registry.gitlab.com/BXBZwe/gocicd:${TAG}
+    image: registry.gitlab.com/bxbzwe/gocicd:${TAG}
     env_file: .env
     logging:
       driver: "json-file"

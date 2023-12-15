@@ -49,8 +49,8 @@ build-merge:
   before_script:
     - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
   script:
-    - docker build -t registry.gitlab.com/BXBZwe/gocicd:latest .
-    - docker push registry.gitlab.com/BXBZwe/gocicd:latest
+    - docker build -t registry.gitlab.com/bxbzwe/gocicd:latest .
+    - docker push registry.gitlab.com/bxbzwe/gocicd:latest
 
 build:
   image: docker:20.10.16
@@ -63,8 +63,8 @@ build:
     - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
     - VERSION=$(echo "$CI_COMMIT_REF_NAME" | sed 's/^v//')
   script:
-    - docker build -t registry.gitlab.com/BXBZwe/gocicd:$VERSION .
-    - docker push registry.gitlab.com/BXBZwe/gocicd:$VERSION
+    - docker build -t registry.gitlab.com/bxbzwe/gocicd:$VERSION .
+    - docker push registry.gitlab.com/bxbzwe/gocicd:$VERSION
 
 update_docker_compose:
   extends: .deploy_template
@@ -78,3 +78,4 @@ deploy_api:
   stage: deployment
   script:
     - ssh $SERVER_USER@$SERVER_HOST "cd production && docker compose up -d"
+    

@@ -1,3 +1,3 @@
-module gitlab.com/BXBZwe/gocicd
+module gitlab.com/bxbzwe/gocicd
 
 go 1.21
